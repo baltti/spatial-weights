@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Пространственные веса</title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/simple.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+
+	<link rel="stylesheet" href="plugin/reveal-pointer/pointer.css" />
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="tpl-con-title" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Пространственные веса<!-- .element: style="font-size: 50px" -->
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="block">
+
+Пространственные веса являются одним из способов <mark style="background: #ADCCFFA6;">проиллюстрировать и понять пространственные отношения между объектами</mark>.
+
+
+Вычисление пространственных весов позволяет ___определить соседние и близкие друг к другу объекты___.
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+Пространственные веса используются в первую очередь <mark style="background: #ADCCFFA6;">для выявления пространственной взаимосвязи между объектами</mark>, а также для создания пространственно выраженных переменных.
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="block">
+
+<div class="callout callout-color-default">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-pencil-alt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Пространственные веса - это способ **концептуализации пространственных отношений**.
+
+</div>
+</div>
+<div class="callout-content">
+
+Концептуализация пространственных отношений - это моделирование отношений и взаимосвязей между объектами в пространстве.
+
+</div>
+</div>
+</div>
+
+
+<!-- .element: style="font-size: 30px" -->
+
+Другими словами - это формализованный математически определенный способ сформулировать понятия _"соседний", "окрестность", "близко", "далеко", "смежный"._
+<!-- .element: style="font-size: 25px" -->
+
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 50%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" align="center">
+
+<div class="block">
+
+Фактически при расчете пространственных весов мы переходим к  <mark style="background: #ADCCFFA6;">**топологии**</mark> - _математической структуре, выражающей взаимосвязь между наблюдениями_, - которую мы можем использовать для изучения данных.
+</div>
+
+<!-- .element: style="font-size: 30px" -->
+</div>
+
+
+<div class="" style="position: absolute; left: 5%; top: 40%; height: 50%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" align="center">
+
+<img src="Pasted image 20250317113353.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+**Матрицы пространственных весов выражают эту топологию, позволяя нам объединить все наши наблюдения в пространстве**, а не задавать и отвечать на отдельные вопросы об объектах, расположенных рядом с единицей измерения.
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 0%; top: 10%; height: 20%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" align="center">
+
+## Матрица пространственных весов
+</div>
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 10%; height: 100%; width: 80%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="Снимок экрана 2025-03-17 в 16.26.15.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Свойства матрицы пространственных весов<!-- .element: style="font-size: 40px" -->
+
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="block">
+
+- Пространственные веса принимают <mark style="background: #CACFD9A6;">_нулевые значения, если объекты не являются соседними, и ненулевые, если объекты соседствуют</mark>._
+</div>
+
+<!-- .element: style="font-size: 30px" class="fragment" data-fragment-index="1" -->
+
+<div class="block">
+
+- Как правило, <mark style="background: #CACFD9A6;">объекты не считаются соседями самим себе</mark>, то есть диагональные элементы этой матрицы равны 0.
+</div>
+
+ <!-- .element: style="font-size: 30px" class="fragment" data-fragment-index="2" -->
+
+<div class="block">
+
+- В самой простой форме матрица весов иллюстрирует <mark style="background: #CACFD9A6;">наличие соседства между объектами в бинарном виде с весами 1 и 0</mark>, где первый присваивается парам соседних объектов, а второй - паре объектов, не являющихся соседями.
+</div>
+
+<!-- .element: style="font-size: 30px" class="fragment" data-fragment-index="3" -->
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 60%; width: 60%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<img src="Pasted image 20250317114651.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 50%; top: 45%; height: 50%; width: 50%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="Pasted image 20250317114738.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 70%; height: 30%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end" align="left">
+
+https://tsamsonov.github.io/r-spatstat-course/spreg.html <!-- .element: style="font-size: 15px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 60%; width: 60%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<img src="Pasted image 20250317114722.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 50%; top: 45%; height: 50%; width: 50%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="Pasted image 20250317114744.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 70%; height: 30%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end" align="left">
+
+https://tsamsonov.github.io/r-spatstat-course/spreg.html <!-- .element: style="font-size: 15px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Веса по смежности<!-- .element: style="font-size: 50px" -->
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="block">
+
+> Смежными считаются объекты, имеющие точки соприкосновения.
+
+<div class="callout callout-color-default">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-pencil-alt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Есть два принципа определения смежности объектов:
+
+</div>
+</div>
+<div class="callout-content">
+
+- принцип ладьи - объекты считаются смежными, если у них есть общая ненулевая граница;
+
+- принцип королевы (ферзя) - объекты считаются смежными, если у них есть хотя бы одная общая точка.
+
+</div>
+</div>
+
+<!-- .element: style="font-size: 30px" -->
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 50%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<img src="Pasted image 20250317121003.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 5%; top: 50%; height: 50%; width: 100%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="Pasted image 20250317130523.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 70%; height: 30%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end" align="left">
+
+https://tsamsonov.github.io/r-spatstat-course/spreg.html <!-- .element: style="font-size: 15px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+## Веса по расстоянию
+
+Кроме смежности, <mark style="background: #ADCCFFA6;">соседство объектов может быть определено как функция расстояния</mark>.
+
+Для этого, как правило, нужна матрица расстояний между объектами. Эта матрица передается в некоторую функцию, которая превращает информацию о близости в функцию близости от расстояния.
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<img src="Pasted image 20250317171155.png" alt="" style="object-fit: scale-down">
+
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 0%; top: 2%; height: 10%; width: 70%; display: flex; flex-direction: column; align-items: center; justify-content: center" align="center">
+
+<div class="block">
+
+## `$k$` - ближайших соседей (соседи по количеству)</div>
+
+ <!-- .element: style="font-size: 20px" -->
+</div>
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 10%; height: 20%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+При использовании этого метода соседи определяются как <mark style="background: #ADCCFFA6;">заданное количество (k) ближайших объектов</mark>.
+</div>
+
+ <!-- .element: style="font-size: 30px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 30%; height: 50%; width: 50%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<img src="Pasted image 20250317130654.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 50%; top: 30%; height: 50%; width: 50%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<img src="Pasted image 20250317130703.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 70%; height: 30%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end" align="left">
+
+https://www.paulamoraga.com/book-spatial/spatial-neighborhood-matrices.html <!-- .element: style="font-size: 15px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<img src="Pasted image 20250317115019.png" alt="" style="object-fit: scale-down">
+
+<div class="" style="position: absolute; left: 0%; top: 70%; height: 30%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end" align="left">
+
+https://tsamsonov.github.io/r-spatstat-course/spreg.html <!-- .element: style="font-size: 15px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Ядерная оценка веса
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+При расчете таких весов используется основной принцип, что <mark style="background: #D2B3FFA6;">более близкие наблюдения имеют больший вес, чем удаленные наблюдения</mark>.
+
+Такие веса являются наиболее часто используемыми, здесь предполагается, что **с увеличением расстояния пространственная близость будет уменьшаться**.
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+Полученные веса будут зависеть от двух основных параметров:
+<div class="block">
+
+•<mark style="background: #ADCCFFA6;">функция ядра (kernel function) </mark>- как модулируется расстояние;
+</div>
+
+<!-- .element: style="font-size: 30px" class="fragment" data-fragment-index="1" -->
+
+<div class="block">
+
+•<mark style="background: #ADCCFFA6;">пропускная способность или полоса пропускания</mark> (bandwidth) -  расстояние, на котором применяется функция ядра. Может быть фиксированной или адаптивной.
+</div>
+
+ <!-- .element: style="font-size: 30px" class="fragment" data-fragment-index="2" -->
+
+То есть, для наблюдений, не попавших в полосу пропускания веса будут равны нулю.<!-- .element: style="font-size: 30px" class="fragment" data-fragment-index="3" -->
+
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<img src="Pasted image 20250317115140.png" alt="" style="object-fit: scale-down">
+
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Гибридные веса
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+Наиболее простая матрица пространственных весов, построенная на основе меры расстояния, получается, <mark style="background: #BBFABBA6;"> `$i$`  и `$j$` считаются соседями всякий раз, когда `$j$` попадает в полосу расстояний (distance band) от `$i$`.</mark>
+
+`$w_{ij}=1$`, когда `$d_{ij}≤δ$` и `$w_{ij}=0$`, когда `$d_{ij}>δ$` , где `$δ$` - заданное критическое расстояние.
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+<img src="Pasted image 20250317121120.png" alt="" style="object-fit: scale-down">
+
+<div class="" style="position: absolute; left: 0%; top: 70%; height: 30%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end" align="left">
+
+https://tsamsonov.github.io/r-spatstat-course/spreg.html <!-- .element: style="font-size: 15px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 50%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<div class="callout callout-color-default">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-pencil-alt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Для того чтобы избежать изоляций (островов), возникающих в результате слишком жесткого критического расстояния
+
+</div>
+</div>
+<div class="callout-content">
+
+расстояние должно быть выбрано таким образом, чтобы каждое местоположение имело хотя бы одного соседа. Такое расстояние соответствует критерию max-min, т.е. является наибольшим из расстояний между ближайшими соседями
+
+</div>
+</div>
+</div>
+
+ <!-- .element: style="font-size: 20px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 50%; height: 40%; width: 40%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<img src="Pasted image 20250317130804.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 40%; top: 50%; height: 40%; width: 40%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<img src="Pasted image 20250317130814.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 70%; height: 30%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end" align="left">
+
+https://www.paulamoraga.com/book-spatial/spatial-neighborhood-matrices.html <!-- .element: style="font-size: 15px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 10%; top: 10%; height: 80%; width: 80%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<img src="Pasted image 20250317115103.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 70%; height: 30%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end" align="left">
+
+https://tsamsonov.github.io/r-spatstat-course/spreg.html <!-- .element: style="font-size: 15px" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Блочные веса
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+В этом случае **<mark style="background: #ADCCFFA6;">соседство определяется принадлежностью к группе объектов (блоку)</mark>**.
+
+<div class="block">
+
+<div class="callout callout-color-default">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-pencil-alt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Фактически группа-блок связывает наблюдения между собой объекты и они считаются близкими. 
+
+</div>
+</div>
+<div class="callout-content">
+
+Для каждой пары наблюдений в группе вес будет равен единице, а для всех остальных наблюдений, не входящих в группу, вес в паре с любым наблюдением в группе, будет нулевым.
+
+</div>
+</div>
+</div>
+
+ <!-- .element: style="font-size: 30px" -->
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 10%; height: 20%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+В результате получается матрица, состоящая из блоков единиц, расположенных по диагонали.
+</div>
+
+<div class="" style="position: absolute; left: 20%; top: 35%; height: 60%; width: 60%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="Pasted image 20250317115235.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 50%; width: 50%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<img src="Pasted image 20250317115250.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="" style="position: absolute; left: 5%; top: 60%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+•Пространственная автокорреляция и пространственный лаг<!-- .element: style="font-size: 30px" class="fragment" data-fragment-index="1" -->
+
+•пространственно-выраженные переменные<!-- .element: style="font-size: 30px" class="fragment" data-fragment-index="2" -->
+
+•Пространственная регрессия<!-- .element: style="font-size: 30px" class="fragment" data-fragment-index="3" -->
+</div>
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Дополнительные источники<!-- .element: style="font-size: 35px" -->
+
+<div class="" style="position: absolute; left: 80%; top: 0%; height: 10%; width: 20%; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right">
+
+<img src="logo_osnovnoy_russkiy_chernyy.jpg" alt="" style="object-fit: scale-down">
+
+</div>
+
+<div class="block">
+
+1. Алгоритмы ГИС (рус.) https://dmkpress.com/catalog/computer/programming/algorithms/978-5-97060-908-8/
+2. GIS algorithms https://uk.sagepub.com/en-gb/eur/gis-algorithms/book241284
+3. Методы и практика пространственного анализа (рус.) https://dmkpress.com/catalog/computer/data/978-5-97060-912-5/
+4. Spatial analysis methods and practice https://books.google.ru/books?id=5o7fDwAAQBAJ&printsec=copyright&redir_esc=y#v=onepage&q&f=false
+5. Geographic Data Science with Python [https://geographicdata.science/book/intro.html](https://geographicdata.science/book/intro.html)
+6.  Introduction to Spatial Data Programming with Python [https://geobgu.xyz/py/](https://geobgu.xyz/py/)
+7. Spatial Statistics for Data Science: Theory and Practice with R [https://www.paulamoraga.com/book-spatial/](https://www.paulamoraga.com/book-spatial/)
+8. GeoDa [https://geodacenter.github.io/](https://geodacenter.github.io/)
+9. Пространственная статистика на языке R [https://tsamsonov.github.io/r-spatstat-course/index.html](https://tsamsonov.github.io/r-spatstat-course/index.html)
+10. Основы геоинформатики [https://tsamsonov.github.io/gis-course/](https://tsamsonov.github.io/gis-course/)
+</div>
+
+ <!-- .element: style="font-size: 20px" -->
+
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+© 2025 Балтыжакова Т.И.<!-- .element: style="font-size: 10px" -->
+</div>
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/reveal-pointer/pointer.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+	      RevealPointer,
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":true,"transition":"none","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
